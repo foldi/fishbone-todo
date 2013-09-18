@@ -1,1 +1,46 @@
-My GitHub Page
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv='content-type' content='text/html; charset=UTF-8' />
+    <meta name='keywords' content='Flora' />
+    <meta name='description' content='' />
+    <title>To do</title>
+    <link rel="stylesheet" href="css/ToDo.min.css" type="text/css" charset="utf-8" />
+    <script src='scripts/fishbone.min.js'></script>
+    <script src='scripts/route-recognizer.js'></script>
+    <script src='scripts/doT.min.js'></script>
+  </head>
+  <body>
+
+    <div class='container'>
+   
+      <form id='myForm'>
+        <input type='text' name='name' placeholder='What needs to be done?'>
+      </form>
+
+      <div id='myResults' class='results'></div>
+
+      <table id='myMenu' class='menu'>
+        <tr>
+          <td class='left'></td>
+          <td class='middle'>
+            <a id='showAll' class='menuLink' rel='all' href='#'>All</a>&nbsp;
+            <a id='showActive' class='menuLink' rel='active' href='#'>Active</a>&nbsp;
+            <a id='showCompleted' class='menuLink' rel='completed' href='#'>Completed</a>
+          </td>
+          <td class='right'></td>
+        </tr>
+      </table>
+
+
+  </div>
+    <script src='scripts/ToDo.min.js'></script>
+    <script>
+      var router = new RouteRecognizer();
+      var form = document.getElementById('myForm');
+      var results = document.getElementById('myResults');
+      var menu = document.getElementById('myMenu');
+      var app = new ToDo.App(router, doT, form, results, menu);
+    </script>
+  </body>
+</html>
