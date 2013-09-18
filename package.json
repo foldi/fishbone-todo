@@ -1,6 +1,6 @@
 {
   "name": "ToDo",
-  "version": "2.1.4",
+  "version": "1.0.0",
   "description": "A small MVC todo example.",
   "main": "src/main.js",
   "scripts": {

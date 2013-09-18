@@ -7,6 +7,8 @@
     <title>To do</title>
     <link rel="stylesheet" href="css/ToDo.min.css" type="text/css" charset="utf-8" />
     <script src='scripts/fishbone.min.js'></script>
+    <script src='scripts/route-recognizer.js'></script>
+    <script src='scripts/doT.min.js'></script>
   </head>
   <body>
 
@@ -22,9 +24,9 @@
         <tr>
           <td class='left'></td>
           <td class='middle'>
-            <a id='showAll' rel='all' href='/index.html?show=all'>All</a>&nbsp;
-            <a id='showActive' rel='active' href='/index.html?show=active'>Active</a>&nbsp;
-            <a id='showCompleted' rel='completed' href='/index.html?show=completed'>Completed</a>
+            <a id='showAll' class='menuLink' rel='all' href='#'>All</a>&nbsp;
+            <a id='showActive' class='menuLink' rel='active' href='#'>Active</a>&nbsp;
+            <a id='showCompleted' class='menuLink' rel='completed' href='#'>Completed</a>
           </td>
           <td class='right'></td>
         </tr>
@@ -34,10 +36,11 @@
   </div>
     <script src='scripts/ToDo.min.js'></script>
     <script>
+      var router = new RouteRecognizer();
       var form = document.getElementById('myForm');
       var results = document.getElementById('myResults');
       var menu = document.getElementById('myMenu');
-      var app = new ToDo.App(form, results, menu);
+      var app = new ToDo.App(router, doT, form, results, menu);
     </script>
   </body>
 </html>

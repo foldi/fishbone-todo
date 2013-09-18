@@ -21,7 +21,7 @@ form, input, .item {
 }
 
 input, .item {
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(200, 200, 200);
   padding: 0.5em;
   display: block;
   color: gray;
@@ -54,7 +54,7 @@ table {
 
 .menu {
   padding: 0.25em;
-  background-color: gray;
+  background-color: rgb(100, 100, 100);
   color: white;
 }
 
@@ -92,5 +92,5 @@ table {
   width: 50px;
   font-size: 14px;
   text-align: center;
-  color: rgb(200, 200, 200);
+  color: rgb(150, 150, 150);
 }

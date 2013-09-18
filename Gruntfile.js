@@ -74,7 +74,7 @@ module.exports = function(grunt) {
         }
       },
       target: {
-        src: ['src/*.js'],
+        src: ['src/Item.js', 'src/View.js', 'src/ItemView.js', 'src/TotalView.js', 'src/App.js', 'src/Templates.js'],
         dest: 'release/' + latest + '.js'
       }
     },
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
         report: 'min'
       },
       target: {
-        src: ['src/raf.js', 'src/Vector.js', 'src/StatsDisplay.js', 'src/FeatureDetector.js', 'src/Item.js', 'src/System.js', 'src/World.js', 'src/Box.js', 'src/Ball.js'],
+        src: ['src/Item.js', 'src/View.js', 'src/ItemView.js', 'src/TotalView.js', 'src/App.js', 'src/Templates.js'],
         dest: 'release/' + latest + '.min.js'
       }
     },
