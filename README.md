@@ -6,6 +6,7 @@ This project was inspired by a talk from [Martin Kleppe at JSConfEU2013](http://
 * Routing - [route-recognizer](https://github.com/tildeio/route-recognizer)
 * HTML Templating - [doT.js](https://github.com/olado/doT)
 
+Check it out in action at http://foldi.github.io/fishbone-todo.
 
 Building this project
 ======
