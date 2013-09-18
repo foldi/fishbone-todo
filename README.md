@@ -1,10 +1,10 @@
 #Fishbone-ToDo: A fishbone.js ToDo example.
 
-This project was inspired by a talk from Martin Kleppe at JSConfEU2013 where he demoed fishbone.js. It attempts to create the classic Todo web app example using the smallest libraries I could find. The app code plus libraries weighs in at ~14k.
+This project was inspired by a talk from Martin Kleppe at JSConfEU2013 where he demoed fishbone.js. It attempts to create the classic Todo web app example using the smallest libraries I could find. The app code plus libraries weigh in at ~14K.
 
-MVC - [fishbone.js](https://github.com/aemkei/fishbone.js)
-Routing - [route-recognizer](https://github.com/tildeio/route-recognizer)
-HTML Templating - [doT.js](https://github.com/olado/doT)
+* MVC - [fishbone.js](https://github.com/aemkei/fishbone.js)
+* Routing - [route-recognizer](https://github.com/tildeio/route-recognizer)
+* HTML Templating - [doT.js](https://github.com/olado/doT)
 
 
 Building this project
