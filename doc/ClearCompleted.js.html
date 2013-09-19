@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: MenuItemController.js</title>
+    <title>JSDoc: Source: ClearCompleted.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: MenuItemController.js</h1>
+    <h1 class="page-title">Source: ClearCompleted.js</h1>
     
     
 
@@ -26,43 +26,17 @@
     <section>
         <article>
             <pre class="prettyprint source"><code>/**
- * @requires MenuItem
- * @extends {Controller}
+ * @requires Model
  */
-var MenuItemController = Controller.extend({
-  create: function(props) {
-    var inst = new MenuItem(++this.app.idCount, props);
-    inst.on('update', this.updateView);
-    inst.on('remove', this.removeView);
-    this.app.records.list.push(inst);
-    this.app.records.lookup[inst.id] = inst;
-    this.trigger('createItem');
-    return inst;
-  },
-  click: function(e) {
-    var i, max, record, records = this.app.records,
-        recs, id = this.getItemIdByDOMNode(e.target),
-        rel = e.target.getAttribute('rel');
-
-    // get all menu items and set selected = false
-    for (i = records.list.length - 1; i >= 0; i--) {
-      record = records.list[i];
-      if (record instanceof MenuItem) {
-        this.updateItem(record.id, 'selected', false);
-      }
-    }
-
-    // set this selected = true
-    this.updateItem(id, 'selected', true);
-
-    // build a url and push it to the history
-    e.preventDefault();
-    var result, url = '#/show/' + e.target.rel;
-    window.history.pushState(e.target.rel, 'ToDo', url);
-    result = this.app.router.recognize(url);
-    for (i = 0, max = result.length; i &lt; max; i++) {
-      result[i].handler.call(this, result[i].params.type);
-    }
+var ClearCompleted = Model({
+	init: function(id, props) {
+    this.id = id;
+	this.total = props.total;
+	this.trigger('create');
+	},
+  update: function(attr, val) {
+    this[attr] = val;
+    this.trigger('update', this);
   }
 });</code></pre>
         </article>

@@ -1,4 +1,4 @@
-/*! ToDo v1.1.0 - 2013-09-19 01:09:04 
+/*! ToDo v1.1.0 - 2013-09-19 04:09:59 
  *  Vince Allen 
  *  Brooklyn, NY 
  *  vince@vinceallen.com 
@@ -106,9 +106,10 @@ var Controller = Model({
 exports.Controller = Controller;
 
 var Templates = {
-	task: '<table class="item"><tr><td class="detail left" rel="done">done</td><td class="detail middle {{? it.done}}done{{?}}">{{=it.name}}</td><td class="detail right" rel="remove">del</td></tr></table>',
+	task: '<table class="item"><tr><td class="detail left"><a class="action" rel="done">done</a></td><td class="detail middle {{? it.done}}done{{?}}">{{=it.name}}</td><td class="detail right"><a class="action" rel="remove">del</a></td></tr></table>',
 	menuItem: '<a id="{{=it.id}}" class="menuItem {{? it.selected}}selected{{?}}" rel="{{=it.type}}" href="#">{{=it.name}}</a>',
-	totalTasks: '<span>{{? it.total}}{{=it.total}} {{? it.total === 1}}item {{?? }}items {{?}} left{{?}}</span>'
+	totalTasks: '<span>{{? it.total}}{{=it.total}} {{? it.total === 1}}item {{?? }}items {{?}} left{{?}}</span>',
+	clearCompleted: '{{? it.total}}<a class="clearCompletedItem">clear done ({{=it.total}})</a>{{?}}'
 };
 exports.Templates = Templates;
 
@@ -136,11 +137,22 @@ var App = Model({
     });
     this.totalTasksController.render(totalTasks, Templates.totalTasks);
 
+    //// clearCompleted
+    this.clearCompletedController = new ClearCompletedController(this, document.getElementById('clearCompleted'), {
+      'click': 'click'
+    });
+    var clearCompleted = this.clearCompletedController.create({
+      total: this.clearCompletedController.getTotalCompleted()
+    });
+    this.clearCompletedController.render(clearCompleted, Templates.clearCompleted);
+    this.clearCompletedController.on('removeItem', this.totalTasksController.updateTotal.bind(this.totalTasksController, totalTasks));
+
     //// task
     this.taskController = new TaskController(this, document.getElementById('tasks'), {
       'click': 'click'
     });
     this.taskController.on('createItem', this.totalTasksController.updateTotal.bind(this.totalTasksController, totalTasks));
+    this.taskController.on('updateItem', this.clearCompletedController.updateTotal.bind(this.clearCompletedController, clearCompleted));
     this.taskController.on('removeItem', this.totalTasksController.updateTotal.bind(this.totalTasksController, totalTasks));
     
     //// menuItem
@@ -192,6 +204,111 @@ var App = Model({
   }
 });
 exports.App = App;
+
+var ClearCompleted = Model({
+	init: function(id, props) {
+    this.id = id;
+	this.total = props.total;
+	this.trigger('create');
+	},
+  update: function(attr, val) {
+    this[attr] = val;
+    this.trigger('update', this);
+  }
+});
+exports.ClearCompleted = ClearCompleted;
+
+var ClearCompletedController = Controller.extend({
+  create: function(props) {
+    var inst = new ClearCompleted(++this.app.idCount, props);
+    inst.on('update', this.updateView);
+    inst.on('remove', this.removeView);
+    this.app.records.list.push(inst);
+    this.app.records.lookup[inst.id] = inst;
+    this.trigger('createItem');
+    return inst;
+  },
+  getTotalCompleted: function() {
+    var i, record, records = this.app.records, total = 0;
+    for (i = records.list.length - 1; i >= 0; i--) {
+      record = records.list[i];
+      if (record instanceof Task && record.done) {
+        total++;
+      }
+    }
+    return total;
+  },
+  updateTotal: function(item) {
+    this.updateItem(item.id, 'total', this.getTotalCompleted());
+  },
+  click: function() {
+    var i, record, records = this.app.records, clearCompleted;
+    for (i = records.list.length - 1; i >= 0; i--) {
+      record = records.list[i];
+      if (record instanceof Task && record.done) {
+        this.removeItem(record.id);
+      } else if (record instanceof ClearCompleted) {
+        clearCompleted = record;
+      }
+    }
+    this.updateTotal(clearCompleted);
+    this.trigger('removeItem');
+  }
+});
+exports.ClearCompletedController = ClearCompletedController;
+
+var MenuItem = Model({
+	init: function(id, props) {
+    this.id = id;
+	this.name = props.name;
+	this.type = props.type;
+	this.selected = !!props.selected;
+	this.trigger('create');
+	},
+  update: function(attr, val) {
+    this[attr] = val;
+    this.trigger('update', this);
+  }
+});
+exports.MenuItem = MenuItem;
+
+var MenuItemController = Controller.extend({
+  create: function(props) {
+    var inst = new MenuItem(++this.app.idCount, props);
+    inst.on('update', this.updateView);
+    inst.on('remove', this.removeView);
+    this.app.records.list.push(inst);
+    this.app.records.lookup[inst.id] = inst;
+    this.trigger('createItem');
+    return inst;
+  },
+  click: function(e) {
+    var i, max, record, records = this.app.records,
+        recs, id = this.getItemIdByDOMNode(e.target),
+        rel = e.target.getAttribute('rel');
+
+    // get all menu items and set selected = false
+    for (i = records.list.length - 1; i >= 0; i--) {
+      record = records.list[i];
+      if (record instanceof MenuItem) {
+        this.updateItem(record.id, 'selected', false);
+      }
+    }
+
+    // set this selected = true
+    this.updateItem(id, 'selected', true);
+
+    // build a url and push it to the history
+    e.preventDefault();
+    var result, url = '#/show/' + e.target.rel;
+    window.history.pushState(e.target.rel, 'ToDo', url);
+    result = this.app.router.recognize(url);
+    for (i = 0, max = result.length; i < max; i++) {
+      result[i].handler.call(this, result[i].params.type);
+    }
+  }
+});
+exports.MenuItemController = MenuItemController;
 
 var Task = Model({
 	init: function(id, props) {
@@ -263,59 +380,6 @@ var TaskController = Controller.extend({
   }
 });
 exports.TaskController = TaskController;
-
-var MenuItem = Model({
-	init: function(id, props) {
-    this.id = id;
-	this.name = props.name;
-	this.type = props.type;
-	this.selected = !!props.selected;
-	this.trigger('create');
-	},
-  update: function(attr, val) {
-    this[attr] = val;
-    this.trigger('update', this);
-  }
-});
-exports.MenuItem = MenuItem;
-
-var MenuItemController = Controller.extend({
-  create: function(props) {
-    var inst = new MenuItem(++this.app.idCount, props);
-    inst.on('update', this.updateView);
-    inst.on('remove', this.removeView);
-    this.app.records.list.push(inst);
-    this.app.records.lookup[inst.id] = inst;
-    this.trigger('createItem');
-    return inst;
-  },
-  click: function(e) {
-    var i, max, record, records = this.app.records,
-        recs, id = this.getItemIdByDOMNode(e.target),
-        rel = e.target.getAttribute('rel');
-
-    // get all menu items and set selected = false
-    for (i = records.list.length - 1; i >= 0; i--) {
-      record = records.list[i];
-      if (record instanceof MenuItem) {
-        this.updateItem(record.id, 'selected', false);
-      }
-    }
-
-    // set this selected = true
-    this.updateItem(id, 'selected', true);
-
-    // build a url and push it to the history
-    e.preventDefault();
-    var result, url = '#/show/' + e.target.rel;
-    window.history.pushState(e.target.rel, 'ToDo', url);
-    result = this.app.router.recognize(url);
-    for (i = 0, max = result.length; i < max; i++) {
-      result[i].handler.call(this, result[i].params.type);
-    }
-  }
-});
-exports.MenuItemController = MenuItemController;
 
 var TotalTasks = Model({
 	init: function(id, props) {

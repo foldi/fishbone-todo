@@ -25,11 +25,22 @@ var App = Model({
     });
     this.totalTasksController.render(totalTasks, Templates.totalTasks);
 
+    //// clearCompleted
+    this.clearCompletedController = new ClearCompletedController(this, document.getElementById('clearCompleted'), {
+      'click': 'click'
+    });
+    var clearCompleted = this.clearCompletedController.create({
+      total: this.clearCompletedController.getTotalCompleted()
+    });
+    this.clearCompletedController.render(clearCompleted, Templates.clearCompleted);
+    this.clearCompletedController.on('removeItem', this.totalTasksController.updateTotal.bind(this.totalTasksController, totalTasks));
+
     //// task
     this.taskController = new TaskController(this, document.getElementById('tasks'), {
       'click': 'click'
     });
     this.taskController.on('createItem', this.totalTasksController.updateTotal.bind(this.totalTasksController, totalTasks));
+    this.taskController.on('updateItem', this.clearCompletedController.updateTotal.bind(this.clearCompletedController, clearCompleted));
     this.taskController.on('removeItem', this.totalTasksController.updateTotal.bind(this.totalTasksController, totalTasks));
     
     //// menuItem

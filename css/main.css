@@ -1,6 +1,7 @@
 body {
-  background-color: white;
-  font-family: 'Gill Sans';
+	background-color: white;
+  font-family: Courier;
+  font-size: 1.2em;
 }
 
 .container {
@@ -9,7 +10,7 @@ body {
   padding: 0;
 }
 
-form, input, .item {
+.form, .input, .item {
   border: 0;
   padding: 0; margin: 0;
   width: 600px;
@@ -20,93 +21,115 @@ form, input, .item {
   box-sizing: border-box;
 }
 
-input, .item {
-  background-color: rgb(200, 200, 200);
-  padding: 0.5em;
-  display: block;
-  color: gray;
-  font-size: 20px;
+.form {
+  border: 1px solid black;
+  padding: 4px 8px;
 }
 
-.item {
-  background-color: rgb(230, 230, 230);
-  border-bottom: 1px solid rgb(200, 200, 200);
+.input {
+  width: 590px;
+  font-family: Courier;
+  font-size: 1.2em;
 }
 
-table {
-  width: 100%;
+.input:focus {
+  outline-width: 0;
 }
 
-.left {
+.tasks .left, .tasks .right {
   width: 100px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.8em;
+  color: gray;
+}
+
+.tasks .middle {
+  width: 400px;
   text-align: left;
 }
 
-.middle {
-  width: 400px;
-  text-align: center;
+.tasks .item {
+  border-bottom: 1px dashed black;
+  background-color: rgb(240, 240, 240);
 }
 
-.right {
-  width: 100px;
-  text-align: right;
+.tasks .left, .tasks .right {
+  border-right: 1px dashed black;
+  border-left: 1px dashed black;
+}
+
+.tasks .action:hover {
+  text-decoration: underline;
+}
+
+.detail {
+  padding: 0.7em 0.3em;
+}
+
+.item .done {
+  color: gray;
+  text-decoration: line-through;
 }
 
 .menu {
-  padding: 0.25em;
-  background-color: rgb(100, 100, 100);
-  color: white;
+  width: 100%;
+  padding: 0; margin: 0;
+  font-size: 0.8em;
+  background-color: rgb(220, 220, 220);
+  border-left: 1px dotted black;
+  border-right: 1px dotted black;
+  border-bottom: 1px dotted black;
+}
+
+.menu .left, .menu .right {
+  width: 150px;
+  cursor: default;
+  color: gray;
+  padding: 0 4px;
+}
+
+.menu .right {
+  cursor: pointer;
+}
+
+.menu .left {
+  text-align: left;
+}
+
+.menu .right {
+  text-align: right;
+}
+
+.menu .middle {
+  width: 300px;
+  text-align: center;
 }
 
 .menuItems .view {
   display: inline-block;
-  margin: 0 6px;
+  margin: 0 8px;
 }
 
-.menuItems .menuItem, .menuItems .menuItem:hover, .menuItems .menuItem:visited {
-  color: white;
+.menuItems .menuItem {
+  color: black;
   text-decoration: none;
 }
 
-.menuItems .menuItem:hover {
+.menuItems .menuItem {
+  color: black;
+  text-decoration: none;
+}
+
+.menuItems .menuItem:hover, .clearCompletedItem:hover {
   text-decoration: underline;
 }
 
-.menuItems .selected, .menuItems .selected:hover, .menuItems .selected:visited {
-  color: black;
-  cursor: default;
-  text-decoration: none;
-}
-
-
-.item {
-  padding: 0;
-}
-
-.item .detail {
-  padding: 8px;
-}
-
-.item .done {
-  text-decoration: line-through;
-}
-
-.item .left, .item .middle {
-  text-align: left;
-}
-
-.item .middle {
-  width: 500px;
-  background-color: rgb(240, 240, 240);
-}
-
-.item .left, .item .right {
-  width: 50px;
-  font-size: 14px;
-  text-align: center;
+.menuItems .selected {
   color: rgb(150, 150, 150);
 }
 
-.hello {
-  background-color: #ccc;
+.menuItems .selected:hover {
+  text-decoration: none;
+  cursor: default;
 }

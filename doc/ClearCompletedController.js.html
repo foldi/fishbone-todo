@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: MenuItemController.js</title>
+    <title>JSDoc: Source: ClearCompletedController.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: MenuItemController.js</h1>
+    <h1 class="page-title">Source: ClearCompletedController.js</h1>
     
     
 
@@ -26,12 +26,12 @@
     <section>
         <article>
             <pre class="prettyprint source"><code>/**
- * @requires MenuItem
+ * @requires ClearCompleted, Task
  * @extends {Controller}
  */
-var MenuItemController = Controller.extend({
+var ClearCompletedController = Controller.extend({
   create: function(props) {
-    var inst = new MenuItem(++this.app.idCount, props);
+    var inst = new ClearCompleted(++this.app.idCount, props);
     inst.on('update', this.updateView);
     inst.on('remove', this.removeView);
     this.app.records.list.push(inst);
@@ -39,30 +39,31 @@ var MenuItemController = Controller.extend({
     this.trigger('createItem');
     return inst;
   },
-  click: function(e) {
-    var i, max, record, records = this.app.records,
-        recs, id = this.getItemIdByDOMNode(e.target),
-        rel = e.target.getAttribute('rel');
-
-    // get all menu items and set selected = false
+  getTotalCompleted: function() {
+    var i, record, records = this.app.records, total = 0;
     for (i = records.list.length - 1; i >= 0; i--) {
       record = records.list[i];
-      if (record instanceof MenuItem) {
-        this.updateItem(record.id, 'selected', false);
+      if (record instanceof Task && record.done) {
+        total++;
       }
     }
-
-    // set this selected = true
-    this.updateItem(id, 'selected', true);
-
-    // build a url and push it to the history
-    e.preventDefault();
-    var result, url = '#/show/' + e.target.rel;
-    window.history.pushState(e.target.rel, 'ToDo', url);
-    result = this.app.router.recognize(url);
-    for (i = 0, max = result.length; i &lt; max; i++) {
-      result[i].handler.call(this, result[i].params.type);
+    return total;
+  },
+  updateTotal: function(item) {
+    this.updateItem(item.id, 'total', this.getTotalCompleted());
+  },
+  click: function() {
+    var i, record, records = this.app.records, clearCompleted;
+    for (i = records.list.length - 1; i >= 0; i--) {
+      record = records.list[i];
+      if (record instanceof Task && record.done) {
+        this.removeItem(record.id);
+      } else if (record instanceof ClearCompleted) {
+        clearCompleted = record;
+      }
     }
+    this.updateTotal(clearCompleted);
+    this.trigger('removeItem');
   }
 });</code></pre>
         </article>
