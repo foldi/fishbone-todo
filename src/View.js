@@ -1,3 +1,6 @@
+/**
+ * @requires Model
+ */
 var View = Model({
 	init: function(id, template) {
     this.el = document.createElement('div');

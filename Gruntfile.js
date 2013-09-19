@@ -74,7 +74,18 @@ module.exports = function(grunt) {
         }
       },
       target: {
-        src: ['src/Item.js', 'src/View.js', 'src/ItemView.js', 'src/TotalView.js', 'src/App.js', 'src/Templates.js'],
+        src: [
+          'src/View.js',
+          'src/Controller.js',
+          'src/Templates.js',
+          'src/App.js',
+          'src/Task.js',
+          'src/TaskController.js',
+          'src/MenuItem.js',
+          'src/MenuItemController.js',
+          'src/TotalTasks.js',
+          'src/TotalTasksController.js'
+        ],
         dest: 'release/' + latest + '.js'
       }
     },
@@ -88,7 +99,18 @@ module.exports = function(grunt) {
         report: 'min'
       },
       target: {
-        src: ['src/Item.js', 'src/View.js', 'src/ItemView.js', 'src/TotalView.js', 'src/App.js', 'src/Templates.js'],
+        src: [
+          'src/View.js',
+          'src/Controller.js',
+          'src/Templates.js',
+          'src/App.js',
+          'src/Task.js',
+          'src/TaskController.js',
+          'src/MenuItem.js',
+          'src/MenuItemController.js',
+          'src/TotalTasks.js',
+          'src/TotalTasksController.js'
+        ],
         dest: 'release/' + latest + '.min.js'
       }
     },

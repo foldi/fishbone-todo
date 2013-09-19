@@ -58,14 +58,26 @@ table {
   color: white;
 }
 
-.menu a, .menu a:hover, .menu a:visited {
+.menuItems .view {
+  display: inline-block;
+  margin: 0 6px;
+}
+
+.menuItems .menuItem, .menuItems .menuItem:hover, .menuItems .menuItem:visited {
   color: white;
   text-decoration: none;
 }
 
-.menu a:hover {
+.menuItems .menuItem:hover {
   text-decoration: underline;
 }
+
+.menuItems .selected, .menuItems .selected:hover, .menuItems .selected:visited {
+  color: black;
+  cursor: default;
+  text-decoration: none;
+}
+
 
 .item {
   padding: 0;
@@ -93,4 +105,8 @@ table {
   font-size: 14px;
   text-align: center;
   color: rgb(150, 150, 150);
+}
+
+.hello {
+  background-color: #ccc;
 }
