@@ -18,29 +18,22 @@
         <input type='text' name='name' placeholder='What needs to be done?'>
       </form>
 
-      <div id='myResults' class='results'></div>
+      <div id='tasks' class='tasks'></div>
 
-      <table id='myMenu' class='menu'>
+      <table id='menu' class='menu'>
         <tr>
-          <td class='left'></td>
-          <td class='middle'>
-            <a id='showAll' class='menuLink' rel='all' href='#'>All</a>&nbsp;
-            <a id='showActive' class='menuLink' rel='active' href='#'>Active</a>&nbsp;
-            <a id='showCompleted' class='menuLink' rel='completed' href='#'>Completed</a>
-          </td>
+          <td id='totalTasks' class='left'></td>
+          <td id='menuItems' class='middle menuItems'></td>
           <td class='right'></td>
         </tr>
       </table>
-
 
   </div>
     <script src='scripts/ToDo.min.js'></script>
     <script>
       var router = new RouteRecognizer();
       var form = document.getElementById('myForm');
-      var results = document.getElementById('myResults');
-      var menu = document.getElementById('myMenu');
-      var app = new ToDo.App(router, doT, form, results, menu);
+      var app = new ToDo.App(router, doT, form);
     </script>
   </body>
 </html>
